@@ -1,0 +1,8 @@
+{
+  "name": "AgriDo Pay-Later",
+  "description": "A comprehensive credit-based agricultural payment system for farmers to book machinery and services with delayed repayment, featuring AI-driven credit analysis and administrative controls.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
