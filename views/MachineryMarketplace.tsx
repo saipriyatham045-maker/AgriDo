@@ -10,8 +10,8 @@ const MachineryMarketplace: React.FC<Props> = ({ machinery, onBook }) => {
   const navigate = useNavigate();
 
   const handleBookNow = (machine: Machinery) => {
-    onBook(machine);
-    navigate("/track"); // 👉 go to tracking page
+    onBook(machine);     // ✅ create booking
+    navigate("/track");  // ✅ go to tracking page
   };
 
   return (
