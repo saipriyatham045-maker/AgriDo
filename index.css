@@ -1,0 +1,14 @@
+/* Minimal base styles for local dev */
+:root{
+  --bg: #f8fafc;
+  --max-w: 1200px;
+}
+html,body,#root{height:100%;}
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: #0f172a;
+}
+a{color:inherit}
+.min-h-screen{min-height:100vh}

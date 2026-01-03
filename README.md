@@ -1,3 +1,22 @@
+# AgriDo — Local Development
+
+Quick steps to run the site locally with Vite:
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Start the dev server
+
+```bash
+npm run dev
+```
+
+Open http://localhost:5173 in your browser.
+
+If TypeScript complains about missing types, ensure `@types/react` and `@types/react-dom` are installed (they were added to `devDependencies`).
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>

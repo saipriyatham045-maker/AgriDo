@@ -2,7 +2,25 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { FarmerProfile, Transaction } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Avoid using `process.env` in browser builds. Prefer Vite's `import.meta.env`.
+const GEMINI_API_KEY = (typeof import.meta !== 'undefined' ? (import.meta as any).env?.VITE_GEMINI_KEY : undefined) || '';
+
+let ai: any = null;
+if (GEMINI_API_KEY) {
+  try {
+    ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  } catch (e) {
+    console.warn('[AgriDo] Gemini initialization failed, AI features disabled.', e);
+    ai = null;
+  }
+} else {
+  // Safe stub so calls work without an API key in local/browser mode
+  ai = {
+    models: {
+      generateContent: async () => ({ text: JSON.stringify({ status: 'SAFE', confidence: 1, reason: 'Gemini disabled' }), candidates: [{ content: { parts: [] } }] })
+    }
+  };
+}
 
 export const analyzeCreditRisk = async (farmer: FarmerProfile) => {
   try {

@@ -6,7 +6,25 @@ import { PaymentGateway } from './paymentService';
 import { db } from './firebase';
 import { doc, getDoc, setDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// In browser builds `process` is not defined. Read Vite env or provide a safe stub.
+const AI_API_KEY = (typeof import.meta !== 'undefined' ? (import.meta as any).env?.VITE_API_KEY : undefined) || '';
+
+let ai: any = null;
+if (AI_API_KEY) {
+  try {
+    ai = new GoogleGenAI({ apiKey: AI_API_KEY });
+  } catch (e) {
+    console.warn('[AgriDo] GoogleGenAI initialization failed, AI features disabled.', e);
+    ai = null;
+  }
+} else {
+  // Provide a safe stub so auditTransaction works in local/browser mode without an API key
+  ai = {
+    models: {
+      generateContent: async () => ({ text: JSON.stringify({ status: 'SAFE', confidence: 1, reason: 'AI disabled' }) })
+    }
+  };
+}
 
 const STORAGE_KEYS = {
   FARMER: 'agridu_farmer_data',
