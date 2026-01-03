@@ -12,7 +12,7 @@ export const MOCK_FARMER: FarmerProfile = {
   history: [
     {
       id: 't-1',
-      serviceName: 'John Deere 5050D Rental',
+      serviceName: 'Mahindra Arjun 605 DI Rental',
       amount: 4500,
       date: '2024-03-10',
       dueDate: '2024-05-15',
@@ -22,7 +22,7 @@ export const MOCK_FARMER: FarmerProfile = {
     },
     {
       id: 't-2',
-      serviceName: 'Harvesting Service',
+      serviceName: 'Swaraj 855 FE Service',
       amount: 4000,
       date: '2024-02-15',
       dueDate: '2024-04-15',
@@ -48,7 +48,7 @@ export const MOCK_MACHINERY: Machinery[] = [
     ownerName: 'Suresh Patil',
     pricePerDay: 1500,
     imageUrl: 'https://images.unsplash.com/photo-1592919016327-519638ecd757?auto=format&fit=crop&q=80&w=1200',
-    description: 'High-performance 60HP tractor designed for heavy-duty plowing and land preparation.'
+    description: 'High-performance 60HP tractor working in lush green fields. Ideal for heavy plowing.'
   },
   {
     id: 'm-4',
@@ -58,7 +58,7 @@ export const MOCK_MACHINERY: Machinery[] = [
     ownerName: 'Vikram Mehta',
     pricePerDay: 1800,
     imageUrl: 'https://images.unsplash.com/photo-1595066344551-0e1041183f06?auto=format&fit=crop&q=80&w=1200',
-    description: 'Premium agricultural powerhouse with enhanced gear control for precision farming.'
+    description: 'Premium John Deere model pictured during harvest operations in wheat crops.'
   },
   {
     id: 'm-2',
@@ -68,6 +68,6 @@ export const MOCK_MACHINERY: Machinery[] = [
     ownerName: 'Amit Singh',
     pricePerDay: 1400,
     imageUrl: 'https://images.unsplash.com/photo-1594136894086-f6f71694f56d?auto=format&fit=crop&q=80&w=1200',
-    description: 'Iconic Indian tractor known for its ruggedness and exceptional reliability in dry soil.'
+    description: 'Rugged Swaraj tractor prepared for dry soil and crop bed preparation.'
   }
 ];

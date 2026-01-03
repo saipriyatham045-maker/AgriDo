@@ -71,14 +71,30 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
                         selectedRole === role.id ? 'border-emerald-600 bg-emerald-50' : 'border-slate-50 bg-slate-50 hover:border-emerald-100'
                       }`}
                     >
-                      <role.icon className={selectedRole === role.id ? 'text-emerald-600' : 'text-slate-300'} />
-                      <span className="text-[10px] font-black uppercase tracking-widest mt-3">{role.label}</span>
+                      <role.icon className={selectedRole === role.id ? 'text-emerald-600' : 'text-slate-400'} />
+                      <span className={`text-[10px] font-black uppercase tracking-widest mt-3 ${selectedRole === role.id ? 'text-emerald-700' : 'text-black'}`}>
+                        {role.label}
+                      </span>
                     </button>
                   ))}
                 </div>
                 <div className="space-y-4">
-                  <input required placeholder="Full Legal Name" className="w-full px-7 py-5 rounded-2xl bg-slate-50 font-black text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-emerald-600 transition-all" value={name} onChange={e => setName(e.target.value)} />
-                  <input required type="tel" maxLength={10} placeholder="10-Digit Mobile Number" className="w-full px-7 py-5 rounded-2xl bg-slate-50 font-black tracking-widest outline-none focus:bg-white border-2 border-transparent focus:border-emerald-600 transition-all" value={mobile} onChange={e => setMobile(e.target.value.replace(/\D/g, ''))} />
+                  <input 
+                    required 
+                    placeholder="Full Legal Name" 
+                    className="w-full px-7 py-5 rounded-2xl bg-slate-50 font-black text-black outline-none focus:bg-white border-2 border-transparent focus:border-emerald-600 transition-all placeholder:text-slate-400" 
+                    value={name} 
+                    onChange={e => setName(e.target.value)} 
+                  />
+                  <input 
+                    required 
+                    type="tel" 
+                    maxLength={10} 
+                    placeholder="10-Digit Mobile Number" 
+                    className="w-full px-7 py-5 rounded-2xl bg-slate-50 font-black text-black tracking-widest outline-none focus:bg-white border-2 border-transparent focus:border-emerald-600 transition-all placeholder:text-slate-400" 
+                    value={mobile} 
+                    onChange={e => setMobile(e.target.value.replace(/\D/g, ''))} 
+                  />
                 </div>
                 <button type="submit" className="w-full bg-emerald-900 text-white font-black py-6 rounded-[2rem] flex items-center justify-center space-x-3 uppercase tracking-widest text-sm shadow-xl hover:bg-emerald-800 transition-all">
                   <span>Authorize Identity</span>
@@ -91,19 +107,17 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
               <button onClick={() => setStep('login')} className="flex items-center space-x-2 text-emerald-600 font-black text-[10px] uppercase tracking-widest mb-10 hover:translate-x-[-4px] transition-transform">
                 <ChevronLeft size={16} /><span>Return to Identity</span>
               </button>
-              <h2 className="text-3xl font-black text-slate-900 tracking-tighter mb-8">Secure Passkey</h2>
+              <h2 className="text-3xl font-black text-slate-900 tracking-tighter mb-8 text-black">Secure Passkey</h2>
               <div className="space-y-6">
                 <div className="relative">
                   <input 
                     type={showPassword ? "text" : "password"} 
                     placeholder="Enter Password"
-                    className="w-full px-7 py-5 rounded-2xl bg-slate-50 font-black outline-none border-2 border-transparent focus:border-emerald-600 text-xl tracking-widest transition-all"
+                    className="w-full px-7 py-5 rounded-2xl bg-slate-50 font-black text-black outline-none border-2 border-transparent focus:border-emerald-600 text-xl tracking-widest transition-all placeholder:text-slate-400"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                   />
-                  <div className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                    <Lock size={20} />
-                  </div>
+                  {/* Lock symbol removed as requested */}
                 </div>
                 <label className="flex items-center space-x-3 cursor-pointer group select-none">
                   <input 
@@ -112,7 +126,7 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
                     onChange={() => setShowPassword(!showPassword)}
                     className="w-5 h-5 accent-emerald-600 rounded border-slate-200"
                   />
-                  <span className="text-xs font-black text-slate-500 uppercase tracking-widest group-hover:text-emerald-600 transition-colors">Show Password</span>
+                  <span className="text-xs font-black text-black uppercase tracking-widest group-hover:text-emerald-600 transition-colors">Show Password</span>
                 </label>
                 <button onClick={handleVerifyPassword} disabled={isLoading} className="w-full bg-emerald-900 text-white font-black py-6 rounded-[2rem] flex items-center justify-center space-x-3 uppercase tracking-widest text-sm shadow-2xl shadow-emerald-900/20 hover:bg-emerald-800 transition-all">
                   {isLoading ? <Loader2 className="animate-spin" /> : <><span>Log In Securely</span><ShieldCheck size={20} /></>}

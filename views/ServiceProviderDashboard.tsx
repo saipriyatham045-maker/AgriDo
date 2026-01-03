@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Tractor, DollarSign, Calendar, Plus, Settings, Trash2, X, User, Check, ImageIcon, Upload, Link as LinkIcon } from 'lucide-react';
+import { Tractor, DollarSign, Calendar, Plus, Settings, Trash2, X, User, Check, ImageIcon, Upload, Link as LinkIcon, History } from 'lucide-react';
 import { Machinery, Transaction } from '../types';
 
 interface Props {
@@ -14,13 +14,17 @@ interface Props {
 
 const ServiceProviderDashboard: React.FC<Props> = ({ providerName, machinery, history, onAddMachine, onDeleteMachine, onUpdateBooking }) => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAllHistory, setShowAllHistory] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [newMachine, setNewMachine] = useState<Partial<Machinery>>({ name: '', type: 'Tractor', pricePerDay: 1500, description: '', imageUrl: '' });
   const [assigningDriverId, setAssigningDriverId] = useState<string | null>(null);
   const [driverNameInput, setDriverNameInput] = useState('');
 
+  // Fleet is filtered globally from all machinery data passed down
   const myFleet = machinery.filter(m => m.ownerName === providerName || providerName.includes(m.ownerName));
   const myBookings = history.filter(tx => tx.type === 'BOOKING');
+  const visibleBookings = showAllHistory ? myBookings : myBookings.slice(0, 5);
+
   const totalEarnings = history.filter(tx => tx.type === 'BOOKING' && (tx.status === 'COMPLETED' || tx.status === 'PAID')).reduce((acc, tx) => acc + (tx.amount - (tx.agriDoCommission || 0)), 0);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +44,7 @@ const ServiceProviderDashboard: React.FC<Props> = ({ providerName, machinery, hi
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-20">
       <div className="flex justify-between items-center">
         <div><h2 className="text-3xl font-black text-green-900 tracking-tighter uppercase">Fleet Operations</h2></div>
         <button onClick={() => setShowAddModal(true)} className="bg-green-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center space-x-2 hover:bg-green-700 active:scale-95 transition-all"><Plus size={18} /><span>Register Machinery</span></button>
@@ -54,12 +58,15 @@ const ServiceProviderDashboard: React.FC<Props> = ({ providerName, machinery, hi
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6 bg-white rounded-[2.5rem] border border-green-100 overflow-hidden shadow-sm">
-          <div className="px-8 py-6 border-b border-green-50"><h4 className="font-black text-green-900 uppercase tracking-widest text-xs">Live Bookings Queue</h4></div>
+          <div className="px-8 py-6 border-b border-green-50 flex items-center justify-between">
+            <h4 className="font-black text-green-900 uppercase tracking-widest text-xs">Live Bookings Queue</h4>
+            <History size={16} className="text-green-600" />
+          </div>
           <div className="divide-y divide-green-50">
-            {myBookings.length === 0 ? (
+            {visibleBookings.length === 0 ? (
               <div className="p-16 text-center text-gray-400 font-bold">No active bookings for your fleet.</div>
             ) : (
-              myBookings.map(tx => (
+              visibleBookings.map(tx => (
                 <div key={tx.id} className="p-8 space-y-5 hover:bg-slate-50/50 transition-colors">
                   <div className="flex justify-between items-start">
                     <div>
@@ -90,6 +97,16 @@ const ServiceProviderDashboard: React.FC<Props> = ({ providerName, machinery, hi
               ))
             )}
           </div>
+          {myBookings.length > 5 && (
+            <div className="p-6 bg-slate-50/50 text-center border-t border-green-50">
+              <button 
+                onClick={() => setShowAllHistory(!showAllHistory)}
+                className="text-[10px] font-black text-green-700 uppercase tracking-widest hover:underline"
+              >
+                {showAllHistory ? 'Show Recent Only' : 'View All Records'}
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-[2.5rem] border border-green-100 p-8 space-y-6 shadow-sm">
@@ -105,7 +122,7 @@ const ServiceProviderDashboard: React.FC<Props> = ({ providerName, machinery, hi
                   </div>
                 </div>
                 <button 
-                  onClick={() => { if(confirm(`PERMANENTLY DELETE ${m.name} from the database? This action is immediate and cannot be reversed.`)) onDeleteMachine(m.id); }} 
+                  onClick={() => { if(confirm(`PERMANENTLY DELETE ${m.name}? This cannot be undone.`)) onDeleteMachine(m.id); }} 
                   className="p-3 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
                   title="Delete Item"
                 >
@@ -170,7 +187,7 @@ const ServiceProviderDashboard: React.FC<Props> = ({ providerName, machinery, hi
                 </div>
               </div>
               
-              <button type="submit" className="w-full py-6 bg-green-900 text-white rounded-[2rem] font-black uppercase tracking-[0.3em] text-sm shadow-2xl shadow-green-900/20 hover:bg-green-800 transition-all active:scale-[0.98]">Publish to Marketplace</button>
+              <button type="submit" className="w-full py-6 bg-green-600 text-white rounded-[2rem] font-black uppercase tracking-[0.3em] text-sm shadow-2xl shadow-green-900/20 hover:bg-green-700 transition-all active:scale-[0.98]">Add Machinery</button>
             </form>
           </div>
         </div>
